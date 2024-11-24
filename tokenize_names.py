@@ -20,7 +20,7 @@ def tokenize_name(name: str) -> list[str]:
     name = re.sub(r"\s+", " ", name)
     name = re.sub(r"[^\w\s]", "", name)
     name = name.strip()
-    
+
     return list(set(name.split()))
 
 
@@ -35,7 +35,7 @@ def tokenize_names_batch(
 ) -> tuple[bool, Optional[str]]:
     """
     Process documents in batches to add tokenized names where missing.
-    
+
     Args:
         mongo_uri: MongoDB connection string
         database_name: Name of the database
@@ -55,11 +55,13 @@ def tokenize_names_batch(
         collection = db[collection_name]
 
         start_time = time.time()
-        
+
         if logging_enabled:
             logger.info("Getting count of documents to process")
 
-        total_to_process = collection.count_documents({"tokenized_name": {"$exists": False}})
+        total_to_process = collection.count_documents(
+            {"tokenized_name": {"$exists": False}}
+        )
 
         if logging_enabled:
             logger.info(f"Found {total_to_process:,} documents to process")
@@ -74,8 +76,7 @@ def tokenize_names_batch(
 
         while processed_count < total_to_process:
             cursor = collection.find(
-                {"tokenized_name": {"$exists": False}}, 
-                {"_id": 1, source_name_field: 1}
+                {"tokenized_name": {"$exists": False}}, {"_id": 1, source_name_field: 1}
             ).limit(batch_size)
 
             bulk_operations: list[UpdateOne] = []
@@ -85,8 +86,7 @@ def tokenize_names_batch(
                 tokenized_name = tokenize_name(name)
 
                 update_op = UpdateOne(
-                    {"_id": doc["_id"]},
-                    {"$set": {"tokenized_name": tokenized_name}}
+                    {"_id": doc["_id"]}, {"$set": {"tokenized_name": tokenized_name}}
                 )
                 bulk_operations.append(update_op)
 
@@ -96,7 +96,9 @@ def tokenize_names_batch(
                     bulk_operations = []
 
                     if logging_enabled:
-                        logger.info(f"Processed {processed_count:,}/{total_to_process:,} documents")
+                        logger.info(
+                            f"Processed {processed_count:,}/{total_to_process:,} documents"
+                        )
 
             if bulk_operations:
                 result = collection.bulk_write(bulk_operations)
@@ -106,7 +108,9 @@ def tokenize_names_batch(
 
             if logging_enabled:
                 logger.info(f"Completed batch {batch_count}")
-                logger.info(f"Total processed: {processed_count:,}/{total_to_process:,} documents")
+                logger.info(
+                    f"Total processed: {processed_count:,}/{total_to_process:,} documents"
+                )
 
         collection.create_index("tokenized_name", unique=False)
 
@@ -141,18 +145,19 @@ def main():
         #     "source_field": "normalized_name"
         # }
         # ,
-        {
-            "name": "opencorporates_entities",
-            "source_field": "normalised_name"
-        }
+        # {
+        #     "name": "opencorporates_entities",
+        #     "source_field": "normalised_name"
+        # },
+        {"name": "trademo_sourced_entities", "source_field": "name"}
     ]
     # collections = [
     #     {
     #         "name": "mesur.io_entities",
     #         "source_field": "name"
     #     }
-    # ]    
-    mongo_uri = "mongodb://172.17.0.4:27017"
+    # ]
+    mongo_uri = "mongodb://172.17.0.2:27017"
     database_name = "tradeverifyd"
     batch_size = 10000
     max_bulk_ops = 10000
@@ -176,13 +181,19 @@ def main():
                 print(f"Processing completed successfully for {collection['name']}")
                 break
             else:
-                print(f"Attempt {attempt} failed for {collection['name']} with error: {error}", file=sys.stderr)
+                print(
+                    f"Attempt {attempt} failed for {collection['name']} with error: {error}",
+                    file=sys.stderr,
+                )
 
                 if attempt < max_retries:
                     print(f"Retrying in {retry_delay} seconds...")
                     time.sleep(retry_delay)
                 else:
-                    print(f"Max retries reached for {collection['name']}. Exiting with failure.", file=sys.stderr)
+                    print(
+                        f"Max retries reached for {collection['name']}. Exiting with failure.",
+                        file=sys.stderr,
+                    )
                     sys.exit(1)
 
 

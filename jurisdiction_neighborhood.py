@@ -4,7 +4,6 @@ from functools import lru_cache
 import threading
 
 
-
 @dataclass
 class ShippingLocation:
     country: str
@@ -17,7 +16,22 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
     # East Asia
     "CN": ShippingLocation(
         country="China",
-        regional_jurisdictions=["CN", "HK", "MO", "TW", "KR", "JP", "VN", "MN", "KZ", "KG", "SG", "MY", "TH", "PH"],
+        regional_jurisdictions=[
+            "CN",
+            "HK",
+            "MO",
+            "TW",
+            "KR",
+            "JP",
+            "VN",
+            "MN",
+            "KZ",
+            "KG",
+            "SG",
+            "MY",
+            "TH",
+            "PH",
+        ],
         notes="Major manufacturing hub, strong ties with HK/TW/MO",
     ),
     "HK": ShippingLocation(
@@ -55,7 +69,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["MN", "CN", "RU", "KZ"],
         notes="Landlocked nation with strong ties to China and Russia",
     ),
-
     # Southeast Asia
     "VN": ShippingLocation(
         country="Vietnam",
@@ -112,7 +125,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["TL", "ID", "AU"],
         notes="Emerging economy with strong ties to Indonesia",
     ),
-
     # South Asia
     "IN": ShippingLocation(
         country="India",
@@ -154,7 +166,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["AF", "PK", "IR", "TM", "UZ", "TJ", "CN"],
         notes="Landlocked, regional trade hub",
     ),
-
     # Central Asia
     "KZ": ShippingLocation(
         country="Kazakhstan",
@@ -181,7 +192,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["TM", "UZ", "KZ", "IR", "AF"],
         notes="Energy export hub",
     ),
-
     # Middle East
     "AE": ShippingLocation(
         country="United Arab Emirates",
@@ -253,7 +263,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["SY", "TR", "IQ", "JO", "LB"],
         notes="Regional trade connections",
     ),
-
     # North Africa
     "EG": ShippingLocation(
         country="Egypt",
@@ -285,7 +294,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["SD", "EG", "LY", "TD", "SS", "ET", "ER"],
         notes="Strategic location between North and East Africa",
     ),
-
     # East Africa
     "ET": ShippingLocation(
         country="Ethiopia",
@@ -332,7 +340,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["BI", "RW", "TZ", "CD"],
         notes="Emerging trade nation",
     ),
-
     # West Africa
     "NG": ShippingLocation(
         country="Nigeria",
@@ -404,7 +411,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["GM", "SN"],
         notes="Small West African trade point",
     ),
-
     # Central Africa
     "CM": ShippingLocation(
         country="Cameroon",
@@ -428,7 +434,18 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
     ),
     "CD": ShippingLocation(
         country="Democratic Republic of the Congo",
-        regional_jurisdictions=["CD", "CG", "CF", "SS", "UG", "RW", "BI", "TZ", "ZM", "AO"],
+        regional_jurisdictions=[
+            "CD",
+            "CG",
+            "CF",
+            "SS",
+            "UG",
+            "RW",
+            "BI",
+            "TZ",
+            "ZM",
+            "AO",
+        ],
         notes="Large central African nation",
     ),
     "GA": ShippingLocation(
@@ -441,7 +458,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["GQ", "CM", "GA"],
         notes="Oil and gas exporter",
     ),
-
     # Southern Africa
     "ZA": ShippingLocation(
         country="South Africa",
@@ -493,7 +509,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["SZ", "ZA", "MZ"],
         notes="Small landlocked kingdom",
     ),
-
     # North America
     "US": ShippingLocation(
         country="United States",
@@ -510,7 +525,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["MX", "US", "GT", "BZ", "CU"],
         notes="Major manufacturing hub",
     ),
-
     # Central America
     "GT": ShippingLocation(
         country="Guatemala",
@@ -547,7 +561,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["PA", "CR", "CO"],
         notes="Major global shipping hub",
     ),
-
     # Caribbean
     "CU": ShippingLocation(
         country="Cuba",
@@ -584,7 +597,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["TT", "VE", "GY", "BB", "GD"],
         notes="Southern Caribbean energy hub",
     ),
-
     # South America
     "CO": ShippingLocation(
         country="Colombia",
@@ -608,7 +620,19 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
     ),
     "BR": ShippingLocation(
         country="Brazil",
-        regional_jurisdictions=["BR", "UY", "AR", "PY", "BO", "PE", "CO", "VE", "GY", "SR", "GF"],
+        regional_jurisdictions=[
+            "BR",
+            "UY",
+            "AR",
+            "PY",
+            "BO",
+            "PE",
+            "CO",
+            "VE",
+            "GY",
+            "SR",
+            "GF",
+        ],
         notes="Largest South American economy",
     ),
     "EC": ShippingLocation(
@@ -646,7 +670,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["CL", "PE", "BO", "AR"],
         notes="Pacific coast trading nation",
     ),
-
     # Europe (continued from original with additions)
     "GB": ShippingLocation(
         country="United Kingdom",
@@ -660,7 +683,18 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
     ),
     "FR": ShippingLocation(
         country="France",
-        regional_jurisdictions=["FR", "GB", "BE", "LU", "DE", "CH", "IT", "ES", "MC", "AD"],
+        regional_jurisdictions=[
+            "FR",
+            "GB",
+            "BE",
+            "LU",
+            "DE",
+            "CH",
+            "IT",
+            "ES",
+            "MC",
+            "AD",
+        ],
         notes="Major European economy",
     ),
     "ES": ShippingLocation(
@@ -675,12 +709,35 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
     ),
     "DE": ShippingLocation(
         country="Germany",
-        regional_jurisdictions=["DE", "NL", "BE", "LU", "FR", "CH", "AT", "CZ", "PL", "DK"],
+        regional_jurisdictions=[
+            "DE",
+            "NL",
+            "BE",
+            "LU",
+            "FR",
+            "CH",
+            "AT",
+            "CZ",
+            "PL",
+            "DK",
+        ],
         notes="Major European manufacturing hub",
     ),
     "IT": ShippingLocation(
         country="Italy",
-        regional_jurisdictions=["IT", "FR", "CH", "AT", "SI", "HR", "ME", "AL", "GR", "MT", "RO"],
+        regional_jurisdictions=[
+            "IT",
+            "FR",
+            "CH",
+            "AT",
+            "SI",
+            "HR",
+            "ME",
+            "AL",
+            "GR",
+            "MT",
+            "RO",
+        ],
         notes="Mediterranean trading hub",
     ),
     "CH": ShippingLocation(
@@ -848,7 +905,6 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
         regional_jurisdictions=["IS", "NO", "GB", "IE"],
         notes="North Atlantic hub",
     ),
-    
     # Oceania
     "AU": ShippingLocation(
         country="Australia",
@@ -890,43 +946,46 @@ JURISDICTION_NEIGHBORHOODS: dict[str, ShippingLocation] = {
 
 class JurisdictionCache:
     """Thread-safe singleton cache for jurisdiction lookups."""
+
     _instance = None
     _lock = threading.Lock()
-    
+
     def __init__(self):
         self.country_to_iso: Dict[str, str] = {}
         self.lowercase_country_to_iso: Dict[str, str] = {}
         self.iso_to_jurisdictions: Dict[str, List[str]] = {}
         self.lowercase_country_to_jurisdictions: Dict[str, List[str]] = {}
         self.initialized = False
-    
+
     @classmethod
-    def get_instance(cls) -> 'JurisdictionCache':
+    def get_instance(cls) -> "JurisdictionCache":
         """Get or create the singleton instance."""
         if not cls._instance:
             with cls._lock:
                 if not cls._instance:
                     cls._instance = cls()
         return cls._instance
-    
+
     def initialize(self) -> None:
         """Initialize the cache if not already done."""
         if self.initialized:
             return
-            
+
         with self._lock:
             if self.initialized:
                 return
-                
+
             for iso_code, location in JURISDICTION_NEIGHBORHOODS.items():
                 # Cache ISO lookups
                 self.country_to_iso[location.country] = iso_code
                 self.lowercase_country_to_iso[location.country.lower()] = iso_code
-                
+
                 # Cache jurisdiction lookups
                 self.iso_to_jurisdictions[iso_code] = location.regional_jurisdictions
-                self.lowercase_country_to_jurisdictions[location.country.lower()] = location.regional_jurisdictions
-            
+                self.lowercase_country_to_jurisdictions[location.country.lower()] = (
+                    location.regional_jurisdictions
+                )
+
             self.initialized = True
 
 
@@ -935,10 +994,10 @@ def get_regional_jurisdictions(shipping_location: str) -> List[str]:
     """
     Returns a list of potential company jurisdictions based on a shipping location.
     Uses LRU cache for repeated lookups.
-    
+
     Args:
         shipping_location (str): ISO code
-    
+
     Returns:
         List[str]: List of related jurisdiction ISO codes
     """
@@ -952,10 +1011,10 @@ def get_regional_jurisdictions_by_country(country: str) -> List[str]:
     """
     Returns a list of potential company jurisdictions based on a country name.
     Case-insensitive with LRU cache for repeated lookups.
-    
+
     Args:
         country (str): Country name in any case
-    
+
     Returns:
         List[str]: List of related jurisdiction ISO codes
     """
@@ -969,10 +1028,10 @@ def get_iso_code_by_country(country: str) -> str:
     """
     Returns the ISO code for a given country name.
     Case-insensitive with LRU cache for repeated lookups.
-    
+
     Args:
         country (str): Country name in any case
-    
+
     Returns:
         str: ISO code if found, empty string if not found
     """

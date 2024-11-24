@@ -11,22 +11,39 @@ from jurisdiction_neighborhood import (
 # MongoDB connection
 client = MongoClient("mongodb://172.17.0.4:27017")
 db = client["tradeverifyd"]
-# shipments = db["trademo_entities"]
+
+
+# shipments_cfg = {
+#     "collection": "trademo_entities",
+#     "jurisdiction": "country",
+#     "name": "trademo_name",
+#     "normalized_name": "normalized_name",
+#     "tokenized_name": "tokenized_name",
+# }
 
 shipments_cfg = {
-    "collection": "trademo_entities",
-    "jurisdiction": "country",
-    "name": "trademo_name",
-    "normalized_name": "normalized_name",
+    "collection": "trademo_sourced_entities",
+    "jurisdiction": "jurisdiction",
+    "name": "name",
+    "normalized_name": "name",
     "tokenized_name": "tokenized_name",
 }
 
+
+# entity_cfg = {
+#     "collection": "opencorporates_entities",
+#     "jurisdiction": "jurisdiction_code",
+#     "name": "name",
+#     "normalized_name": "normalised_name",
+#     "entity_uid": "company_number",
+#     "tokenized_name": "tokenized_name",
+# }
 entity_cfg = {
-    "collection": "opencorporates_entities",
-    "jurisdiction": "jurisdiction_code",
+    "collection": "mesur.io_entities_notrademo",
+    "jurisdiction": "jurisdiction",
     "name": "name",
-    "normalized_name": "normalised_name",
-    "entity_uid": "company_number",
+    "normalized_name": "name",
+    "entity_uid": "_id",
     "tokenized_name": "tokenized_name",
 }
 
@@ -48,10 +65,10 @@ matching_cfg = {
     "jurisdiction_weight": 0.3,
     # Jurisdiction scoring
     "exact_jurisdiction_score": 1.0,
-    "neighboring_jurisdiction_score": 0.3,
+    "neighboring_jurisdiction_score": 0.5,
     "non_matching_jurisdiction_score": 0.0,
     # Matching thresholds
-    "min_score_threshold": 0.5,
+    "min_score_threshold": 0.6,
     "max_search_results": 20,
 }
 

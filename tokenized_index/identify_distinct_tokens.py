@@ -6,9 +6,7 @@ MONGO_URI = "mongodb://172.17.0.4:27017"
 DATABASE = "tradeverifyd"
 
 client = MongoClient(MONGO_URI, socketTimeoutMS=8 * 60 * 60 * 1000)  # Set an 8-hour timeout
-db = client[DATABASE]  # Replace with your database name
-# MongoDB connection parameters
-# Define the aggregation pipeline
+db = client[DATABASE]  
 pipeline = [
     {
         "$group": {

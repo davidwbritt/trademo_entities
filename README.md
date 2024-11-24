@@ -7,3 +7,4 @@
 7. prune_inverted_index.py -- this will create entity_token_index_filtered which will have removed the token documents with chunk >= 1
 8. identify_distinct_tokens.py
 8. merge_tokens_inverted_index.py -- combines documents by token
+
